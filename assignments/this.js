@@ -29,8 +29,8 @@ let obj1 = {
     favColor: 'Green',
     hobby: 'basketry',
     favThings: function() {
-        console.log(`My favorite color is ${this.favColor} and my favorite hobby is ${this.hobby}`),
-        console.log(this);
+        console.log(`My favorite color is ${this.favColor} and my favorite hobby is ${this.hobby}`)
+        // console.log(this);
     }
 };
 
