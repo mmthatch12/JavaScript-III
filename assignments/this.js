@@ -1,7 +1,7 @@
 /* The for principles of "this";
 * in your own words. explain the four principle for the "this" keyword below.
 *
-* 1. If 'this' is not otherwise assigned or scoped it will affect the global scope.
+* 1. If 'this' is not otherwise assigned or scoped, it will affect the global scope.
 * 2. Even though an object may not specifically be set to or attached to 'this', if a function is called with the 'object.' before
     it the object will be 'this'.
 * 3. New is used with a constructer function so that the constructor function can return an object. 
