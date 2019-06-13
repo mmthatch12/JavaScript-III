@@ -16,12 +16,31 @@
   * destroy() // prototype method that returns: `${this.name} was removed from the game.`
 */
 
+function GameObject(attributes) {
+  this.createdAt = attributes.createdAt;
+  this.name = attributes.name;
+  this.dimensions = attributes.dimensions;
+}
+GameObject.prototype.destroy = function() {
+  return `${this.name} was removed from the game.`
+};
+
+
 /*
   === CharacterStats ===
   * healthPoints
   * takeDamage() // prototype method -> returns the string '<object name> took damage.'
   * should inherit destroy() from GameObject's prototype
 */
+
+function CharacterStats(attributes) {
+  GameObject.call(this, attributes)
+  this.healthPoints = attributes.healthPoints;
+}
+CharacterStats.prototype = Object.create(GameObject.prototype)
+CharacterStats.prototype.takeDamage = function() {
+  return `${this.name} took damage.`
+};
 
 /*
   === Humanoid (Having an appearance or character resembling that of a human.) ===
@@ -32,7 +51,59 @@
   * should inherit destroy() from GameObject through CharacterStats
   * should inherit takeDamage() from CharacterStats
 */
+
+function Humanoid(attributes) {
+  CharacterStats.call(this, attributes)
+  this.team = attributes.team;
+  this.weapons = attributes.weapons;
+  this.language = attributes.language;
+}
+Humanoid.prototype = Object.create(CharacterStats.prototype)
+Humanoid.prototype.greet = function() {
+  return `${this.name} offers a greeting in ${this.language}.`
+};
  
+
+
+
+
+
+
+// Stetch task #1 villan and hero constructor functions
+
+function Badguy(attributes) {
+  Humanoid.call(this, attributes)
+  this.evilPower = attributes.evilPower;
+}
+
+Badguy.prototype = Object.create(Humanoid.prototype)
+
+Badguy.prototype.evilPowerBlast = function (hitPoints) {
+  let hit = this.healthPoints - hitPoints;
+  if (this.healthPoints <= 0) {
+    return `${this.name} is blasted and now only has ${hit} health`
+  } else {
+    return `${this.name} is blasted and now has ${hit} health. ${this.name} has been destroyed!`
+  }
+}
+
+function Goodguy(attributes) {
+  Humanoid.call(this, attributes)
+  this.heroPower = attributes.heroPower;
+}
+
+Goodguy.prototype = Object.create(Humanoid.prototype)
+
+Goodguy.prototype.heroPowerBlast = function (hitPoints) {
+  let hit = this.healthPoints - hitPoints;
+  if (hit <= 0) {
+    return `${this.name} is blasted and now only has ${hit} health`
+  } else {
+    return `${this.name} is blasted and now has ${hit} health. ${this.name} has been destroyed!`
+  }
+}
+
+
 /*
   * Inheritance chain: GameObject -> CharacterStats -> Humanoid
   * Instances of Humanoid should have all of the same properties as CharacterStats and GameObject.
@@ -41,7 +112,7 @@
 
 // Test you work by un-commenting these 3 objects and the list of console logs below:
 
-/*
+
   const mage = new Humanoid({
     createdAt: new Date(),
     dimensions: {
@@ -92,17 +163,59 @@
     language: 'Elvish',
   });
 
-  console.log(mage.createdAt); // Today's date
-  console.log(archer.dimensions); // { length: 1, width: 2, height: 4 }
-  console.log(swordsman.healthPoints); // 15
-  console.log(mage.name); // Bruce
-  console.log(swordsman.team); // The Round Table
-  console.log(mage.weapons); // Staff of Shamalama
-  console.log(archer.language); // Elvish
-  console.log(archer.greet()); // Lilith offers a greeting in Elvish.
-  console.log(mage.takeDamage()); // Bruce took damage.
-  console.log(swordsman.destroy()); // Sir Mustachio was removed from the game.
-*/
+  //stretch goal #3 create hero and villan object
+
+  const villain = new Badguy({
+    createdAt: new Date(),
+    dimensions: {
+      length: 2,
+      width: 1,
+      height: 10,
+    },
+    healthPoints: 30,
+    name: 'Voidicus',
+    team: 'La Cabra',
+    weapons: [
+      'Hatred',
+      'Spear of Self',
+    ],
+    language: 'Esperanto',
+    evilPower: 'Turn tacos into anchovies',
+  });
+
+  const hero = new Goodguy({
+    createdAt: new Date(),
+    dimensions: {
+      length: 1,
+      width: 3,
+      height: 2,
+    },
+    healthPoints: 50,
+    name: 'Awesomeicus',
+    team: 'Fedettes',
+    weapons: [
+      'Virtue',
+      'Eye of Praying Mantis',
+    ],
+    language: 'Ingles',
+    heroPower: 'Turn cake into Pizza',
+  });
+
+
+
+  console.log('log1:', mage.createdAt); // Today's date
+  console.log('log2:', archer.dimensions); // { length: 1, width: 2, height: 4 }
+  console.log('log3:', swordsman.healthPoints); // 15
+  console.log('log4:', mage.name); // Bruce
+  console.log('log5:', swordsman.team); // The Round Table
+  console.log('log6:', mage.weapons); // Staff of Shamalama
+  console.log('log7:', archer.language); // Elvish
+  console.log('log8:', archer.greet()); // Lilith offers a greeting in Elvish.
+  console.log('log9:', mage.takeDamage()); // Bruce took damage.
+  console.log('log10:', swordsman.destroy()); // Sir Mustachio was removed from the game.
+  console.log('log11:', villain)
+  console.log('log12:', hero)
+  console.log('log13:', villain.evilPowerBlast(31))
 
   // Stretch task: 
   // * Create Villain and Hero constructor functions that inherit from the Humanoid constructor function.  
